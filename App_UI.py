@@ -9,19 +9,11 @@ class SpotifyWrapperApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Spotify API authentication
-        scope = "user-top-read"
-        sp_oauth = SpotifyOAuth(client_id='2bd3abf122f54dd0b16eedfa81d2160c',
-                                client_secret='be6572cfc34e48e6a16c49b1eaf87929',
-                                redirect_uri='http://localhost:3000',
-                                scope=scope)
-        token_info = sp_oauth.get_cached_token()
-        if not token_info:
-            auth_url = sp_oauth.get_authorize_url()
-            print("Please visit this URL to authenticate:", auth_url)
-            auth_response = input("Enter the URL you were redirected to: ")
-            token_info = sp_oauth.get_access_token(auth_response)
-        self.spotify = spotipy.Spotify(auth=token_info['access_token'])
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eedfa81d2160c",
+                                               client_secret="be6572cfc34e48e6a16c49b1eaf87929",
+                                               redirect_uri="http://localhost:3000",
+                                               scope="user-library-read"))
+
 
     def get_most_tracked_artists(self):
         results = self.spotify.current_user_top_artists(limit=10, time_range='medium_term')
