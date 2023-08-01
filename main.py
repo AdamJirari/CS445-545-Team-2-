@@ -7,6 +7,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eed
                                                scope="user-library-read"))
 
 results = sp.current_user_saved_tracks()
-for idx, item in enumerate(results['items']):
+topArtists = sp.devices()
+
+for idx, item in enumerate(topArtists['items']):
     track = item['track']
     print(idx, track['artists'][0]['name'], " – ", track['name'])
