@@ -11,9 +11,9 @@ class SpotifyWrapperApp(App):
 
         # Spotify API authentication
         scope = "user-top-read"
-        sp_oauth = SpotifyOAuth(client_id='YOUR_CLIENT_ID',
-                                client_secret='YOUR_CLIENT_SECRET',
-                                redirect_uri='YOUR_REDIRECT_URI',
+        sp_oauth = SpotifyOAuth(client_id='2bd3abf122f54dd0b16eedfa81d2160c',
+                                client_secret='be6572cfc34e48e6a16c49b1eaf87929',
+                                redirect_uri='http://localhost:3000',
                                 scope=scope)
         token_info = sp_oauth.get_cached_token()
         if not token_info:
