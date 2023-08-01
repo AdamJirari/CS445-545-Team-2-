@@ -4,23 +4,19 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from spotipy.oauth2 import SpotifyOAuth
 import spotipy
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eedfa81d2160c",
-                                               client_secret="be6572cfc34e48e6a16c49b1eaf87929",
-                                               redirect_uri="http://localhost:3000",
-                                               scope="user-library-read user-top-read"))
+import main
 
 class SpotifyWrapperApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def get_most_tracked_artists(self):
-        results = sp.current_user_top_artists(limit=10,
+        results = main.sp.current_user_top_artists(limit=10,
                                                    time_range='medium_term')
         return results['items']
 
     def get_most_tracked_songs(self):
-        results = sp.current_user_top_tracks(limit=10,
+        results = main.sp.current_user_top_tracks(limit=10,
                                                   time_range='medium_term')
         return results['items']
 
@@ -43,16 +39,19 @@ class SpotifyWrapperApp(App):
 
     def show_most_tracked_artists(self, instance):
         artists = self.get_most_tracked_artists()
-        self.show_results(artists)
+        self.show_results(artists, 0)
 
     def show_most_tracked_songs(self, instance):
         songs = self.get_most_tracked_songs()
-        self.show_results(songs)
+        self.show_results(songs, 1)
 
-    def show_results(self, items):
+    def show_results(self, items, i):
         result_text = ""
         for item in items:
-            result_text += f"{item['name']} - {item['artists'][0]['name']}\n"
+            if i == 1:
+                result_text += f"{item['name']} - {item['artists'][0]['name']}\n"
+            else:
+                result_text += f"{item['name']}\n"
         self.result_label.text = result_text
 
 SpotifyWrapperApp().run()
