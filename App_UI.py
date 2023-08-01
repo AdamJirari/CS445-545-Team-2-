@@ -5,30 +5,33 @@ from kivy.uix.button import Button
 from spotipy.oauth2 import SpotifyOAuth
 import spotipy
 
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eedfa81d2160c",
+                                               client_secret="be6572cfc34e48e6a16c49b1eaf87929",
+                                               redirect_uri="http://localhost:3000",
+                                               scope="user-library-read user-top-read"))
+
 class SpotifyWrapperApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eedfa81d2160c",
-                                               client_secret="be6572cfc34e48e6a16c49b1eaf87929",
-                                               redirect_uri="http://localhost:3000",
-                                               scope="user-library-read"))
-
-
     def get_most_tracked_artists(self):
-        results = self.spotify.current_user_top_artists(limit=10, time_range='medium_term')
+        results = sp.current_user_top_artists(limit=10,
+                                                   time_range='medium_term')
         return results['items']
 
     def get_most_tracked_songs(self):
-        results = self.spotify.current_user_top_tracks(limit=10, time_range='medium_term')
+        results = sp.current_user_top_tracks(limit=10,
+                                                  time_range='medium_term')
         return results['items']
 
     def build(self):
         layout = BoxLayout(orientation='vertical')
 
         button_layout = BoxLayout(orientation='horizontal')
-        most_tracked_artists_button = Button(text='Most Tracked Artists', on_press=self.show_most_tracked_artists)
-        most_tracked_songs_button = Button(text='Most Tracked Songs', on_press=self.show_most_tracked_songs)
+        most_tracked_artists_button = Button(text='Most Tracked Artists',
+                                             on_press=self.show_most_tracked_artists)
+        most_tracked_songs_button = Button(text='Most Tracked Songs',
+                                           on_press=self.show_most_tracked_songs)
         button_layout.add_widget(most_tracked_artists_button)
         button_layout.add_widget(most_tracked_songs_button)
 
