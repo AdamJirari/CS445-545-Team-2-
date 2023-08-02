@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.core.window import Window
+
 
 import main
 
@@ -22,30 +24,41 @@ class SpotifyWrapperApp(App):
         return results['items']
 
     def build(self):
-        layout = BoxLayout(orientation='vertical')
+        # Set dark mode background color
+        Window.clearcolor = (0.1, 0.1, 0.1, 1)
 
-        self.time_label = Label(text='Currently tracking the past 6 months!')
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+
+        self.time_label = Label(text='Currently tracking the past 6 months!', color=(0.8, 0.8, 0.8, 1), font_size='16sp')
         layout.add_widget(self.time_label)
 
-        button_layout = BoxLayout(orientation='horizontal')
-        most_tracked_artists_button = Button(text='Most Tracked Artists',
-                                             on_press=self.show_most_tracked_artists)
-        most_tracked_songs_button = Button(text='Most Tracked Songs',
-                                           on_press=self.show_most_tracked_songs)
+        self.result_label = Label(text='', color=(0.8, 0.8, 0.8, 1), font_size='14sp')
+        layout.add_widget(self.result_label)
+
+        button_layout = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, 0.1))
+
+        most_tracked_artists_button = Button(text='Most Tracked Artists', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
+        most_tracked_songs_button = Button(text='Most Tracked Songs', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
+
+        most_tracked_artists_button.bind(on_press=self.show_most_tracked_artists)
+        most_tracked_songs_button.bind(on_press=self.show_most_tracked_songs)
+
         button_layout.add_widget(most_tracked_artists_button)
         button_layout.add_widget(most_tracked_songs_button)
 
-        self.result_label = Label(text='')
         layout.add_widget(button_layout)
-        layout.add_widget(self.result_label)
 
-        time_layout = BoxLayout(orientation='horizontal')
-        time1 = Button(text='Short Term',
-                       on_press=self.short_time)
-        time2 = Button(text='Medium Term',
-                       on_press=self.med_time)
+        time_layout = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, 0.1))
+
+        time1 = Button(text='Short Term', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
+        time2 = Button(text='Medium Term', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
+
+        time1.bind(on_press=self.short_time)
+        time2.bind(on_press=self.med_time)
+
         time_layout.add_widget(time1)
         time_layout.add_widget(time2)
+
         layout.add_widget(time_layout)
 
         return layout
@@ -54,7 +67,7 @@ class SpotifyWrapperApp(App):
         global timeframe
         timeframe = 'short_term'
         self.time_label.text = 'Currently tracking the past 4 weeks!'
-        
+
     def med_time(self, instance):
         global timeframe
         timeframe = 'medium_term'
@@ -78,4 +91,6 @@ class SpotifyWrapperApp(App):
                 result_text += f"{item['name']}\n"
         self.result_label.text = result_text
 
-SpotifyWrapperApp().run()
+
+if __name__ == "__main__":
+    SpotifyWrapperApp().run()
