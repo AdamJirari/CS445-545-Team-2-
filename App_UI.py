@@ -3,14 +3,20 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.core.window import Window
-
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import webbrowser
+import urllib.parse
+from moviepy.editor import *
 import main
 
 timeframe = 'medium_term'
 
 class SpotifyWrapperApp(App):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
 
     def get_most_tracked_artists(self):
         results = main.sp.current_user_top_artists(limit=10,
@@ -38,12 +44,15 @@ class SpotifyWrapperApp(App):
 
         most_tracked_artists_button = Button(text='Most Tracked Artists', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
         most_tracked_songs_button = Button(text='Most Tracked Songs', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
+        twitter_share_button = Button(text = "Tweet", background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
 
         most_tracked_artists_button.bind(on_press=self.show_most_tracked_artists)
         most_tracked_songs_button.bind(on_press=self.show_most_tracked_songs)
+        twitter_share_button.bind(on_press=self.share_results_twitter)
 
         button_layout.add_widget(most_tracked_artists_button)
         button_layout.add_widget(most_tracked_songs_button)
+        button_layout.add_widget(twitter_share_button)
 
         layout.add_widget(button_layout)
 
@@ -80,6 +89,20 @@ class SpotifyWrapperApp(App):
         songs = self.get_most_tracked_songs()
         self.show_results(songs, 1)
 
+    def share_results_twitter(self, instance):
+        tweet_text = "Check out the music I listen to"
+        url_to_share = ""
+        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+        webbrowser.open(tweet_url)
+
+    def show_template(self):
+        cover_template = ImageClip(r"C:\Users\ADAM\Git Repos\CS445-545-Team-2-\templates").set_duration(5)
+        topSongs = self.get_most_tracked_songs()
+        text_labels = {}
+
+        for song in topSongs:
+            label = TextClip(song, fontsize=30, color = "Yellow").set_duration(5)
+        
     # 1 denotes a set of songs, 0 denotes a set of albums (for formatting purposes)
     def show_results(self, items, i):
         result_text = ""

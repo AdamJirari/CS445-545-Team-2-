@@ -6,8 +6,3 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eed
                                                redirect_uri="http://localhost:3000",
                                                scope="user-library-read user-top-read"))
 
-#results = sp.current_user_top_tracks(time_range='short_term')
-# topArtists = sp.devices()
-
-#for idx, item in enumerate(results['items']):
-    #print(idx, item['artists'][0]['name'], " – ", item['name'])
