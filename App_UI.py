@@ -1,3 +1,4 @@
+from unittest import result
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -30,6 +31,7 @@ class SpotifyWrapperApp(App):
 
     def build(self):
         # Set dark mode background color
+        self.show_template()
         Window.clearcolor = (0.1, 0.1, 0.1, 1)
 
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
@@ -45,7 +47,6 @@ class SpotifyWrapperApp(App):
         most_tracked_artists_button = Button(text='Most Tracked Artists', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
         most_tracked_songs_button = Button(text='Most Tracked Songs', background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
         twitter_share_button = Button(text = "Tweet", background_color=(0.2, 0.6, 0.9, 1), font_size='14sp')
-
         most_tracked_artists_button.bind(on_press=self.show_most_tracked_artists)
         most_tracked_songs_button.bind(on_press=self.show_most_tracked_songs)
         twitter_share_button.bind(on_press=self.share_results_twitter)
@@ -95,14 +96,46 @@ class SpotifyWrapperApp(App):
         tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
         webbrowser.open(tweet_url)
 
+    #def show_template(self):
+    #    cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
+    #    cover_template.preview()
+    #    topSongs = self.get_most_tracked_songs()
+    #    text_labels = {}
+
+    #    for song in topSongs:
+    #        label = TextClip(song, fontsize=30, color = "Yellow").set_duration(5)
+
     def show_template(self):
-        cover_template = ImageClip(r"C:\Users\ADAM\Git Repos\CS445-545-Team-2-\templates").set_duration(5)
+        cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
         topSongs = self.get_most_tracked_songs()
-        text_labels = {}
+        text_labels = list()
+
+        print("Hello")
+        print(topSongs)
+        print("Hello")
+
+        songCounter = 0
+        columnCounter = 1
+        xAxis = 150
+        yAxis = 1070
 
         for song in topSongs:
-            label = TextClip(song, fontsize=30, color = "Yellow").set_duration(5)
+            songCounter += 1
+            result_text = f"{song['name']} \n"
+
+            label = TextClip(result_text, fontsize=30, color = "white", font = "Arial").set_duration(5)
+            label = label.set_position((xAxis, yAxis))
+            yAxis += 68
+            if songCounter == 5:
+                xAxis += 450
+                yAxis = 1070
+            text_labels.append(label)
         
+        for labels in text_labels:
+            finalTemp = CompositeVideoClip([cover_template, labels])
+            cover_template = finalTemp
+
+        cover_template.write_videofile("output_video.mp4", fps=24)
     # 1 denotes a set of songs, 0 denotes a set of albums (for formatting purposes)
     def show_results(self, items, i):
         result_text = ""
