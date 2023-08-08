@@ -14,7 +14,6 @@ from spotipy.oauth2 import SpotifyOAuth
 
 # from moviepy.editor import *
 
-import main
 
 TIMEFRAME = 'medium_term'
 
@@ -23,16 +22,21 @@ class SpotifyWrapperApp(App):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="2bd3abf122f54dd0b16eedfa81d2160c",
+                                               client_secret="be6572cfc34e48e6a16c49b1eaf87929",
+                                               redirect_uri="http://localhost:3000",
+                                               scope="user-library-read user-top-read"))
+
 
     def get_most_tracked_artists(self):
         """returns most listened to artists in a time frame using spotipy"""
-        results = main.sp.current_user_top_artists(limit=10,
+        results = self.sp.current_user_top_artists(limit=10,
                                                    time_range=TIMEFRAME)
         return results['items']
 
     def get_most_tracked_songs(self):
         """returns most listened to songs in a time frame using spotipy"""
-        results = main.sp.current_user_top_tracks(limit=10,
+        results = self.sp.current_user_top_tracks(limit=10,
                                                   time_range=TIMEFRAME)
         return results['items']
 
@@ -185,5 +189,5 @@ class SpotifyWrapperApp(App):
         self.result_label.text = result_text
 
 
-if __name__ == "__main__":
-    SpotifyWrapperApp().run()
+#if __name__ == "__main__":
+#    SpotifyWrapperApp().run()
