@@ -142,10 +142,6 @@ class SpotifyWrapperApp(App):
         text_labels = list()
         artist_labels = list()
 
-        print("Hello")
-        print(topSongs)
-        print("Hello")
-
         xAxis = 600
         yAxis = 1070
 
