@@ -135,6 +135,7 @@ class SpotifyWrapperApp(App):
         webbrowser.open(tweet_url)
 
     def show_template(self):
+        """creates a mini video with templates"""
         fontSpot = "/Users/adamjirari/Desktop/SPOTIFY SWE/CircularStd-Medium.otf"
         cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
         topSongs = self.get_most_tracked_songs()
@@ -183,7 +184,3 @@ class SpotifyWrapperApp(App):
             else:
                 result_text += f"{item['name']}\n"
         self.result_label.text = result_text
-
-
-#if __name__ == "__main__":
-#    SpotifyWrapperApp().run()
