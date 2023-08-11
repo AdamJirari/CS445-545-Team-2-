@@ -49,5 +49,5 @@ class TestSpotifyWrapperApp(GraphicUnitTest):
         
         self.assertEqual(result_label.text, 'Song 1\n')
         
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+    #unittest.main()
