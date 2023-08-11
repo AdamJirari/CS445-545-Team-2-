@@ -134,49 +134,49 @@ class SpotifyWrapperApp(App):
         tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
         webbrowser.open(tweet_url)
 
-    # def show_template(self):
-    #    cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
-    #    cover_template.preview()
-    #    topSongs = self.get_most_tracked_songs()
-    #    text_labels = {}
+    def show_template(self):
+        fontSpot = "/Users/adamjirari/Desktop/SPOTIFY SWE/CircularStd-Medium.otf"
+        cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
+        topSongs = self.get_most_tracked_songs()
+        topArtists = self.get_most_tracked_artists()
+        text_labels = list()
+        artist_labels = list()
 
-    #    for song in topSongs:
-    #        label = TextClip(song, fontsize=30, color = "Yellow").set_duration(5)
+        print("Hello")
+        print(topSongs)
+        print("Hello")
 
-    # def show_template(self):
-    #    cover_template = ImageClip(r"/Users/adamjirari/Desktop/SPOTIFY SWE/Black_BG.png").set_duration(5)
-    #    topSongs = self.get_most_tracked_songs()
-    #    text_labels = list()
+        xAxis = 600
+        yAxis = 1070
 
-    #    print("Hello")
-    #    print(topSongs)
-    #    print("Hello")
+        for song in topSongs:
+            result_text = f"{song['name']} \n"
 
-    #    songCounter = 0
-    #    columnCounter = 1
-    #    xAxis = 150
-    #    yAxis = 1070
+            label = TextClip(result_text, fontsize=40, color = "white", font = fontSpot).set_duration(5)
+            label = label.set_position((xAxis, yAxis))
+            yAxis += 68
+            text_labels.append(label)
 
-    #    for song in topSongs:
-    #        songCounter += 1
-    #        result_text = f"{song['name']} \n"
+        xAxis1 = 150
+        yAxis1= 1070
 
-    #        label = TextClip(result_text,
-    #                         fontsize=30,
-    #                         color = "white",
-    #                         font = "Arial").set_duration(5)
-    #        label = label.set_position((xAxis, yAxis))
-    #        yAxis += 68
-    #        if songCounter == 5:
-    #            xAxis += 450
-    #            yAxis = 1070
-    #        text_labels.append(label)
+        for artists in topArtists:
+            result_text = f"{artists['name']} \n"
 
-    #    for labels in text_labels:
-    #        finalTemp = CompositeVideoClip([cover_template, labels])
-    #        cover_template = finalTemp
+            label = TextClip(result_text, fontsize=40, color = "white", font = fontSpot).set_duration(5)
+            label = label.set_position((xAxis1, yAxis1))
+            yAxis1 += 68
+            artist_labels.append(label)
 
-    #    cover_template.write_videofile("output_video.mp4", fps=24)
+        for labels in text_labels:
+            finalTemp = CompositeVideoClip([cover_template, labels])
+            cover_template = finalTemp
+
+        for labels in artist_labels:
+            finalTemp = CompositeVideoClip([cover_template, labels])
+            cover_template = finalTemp
+
+        cover_template.write_videofile("output_video.mp4", fps=24)
     # 1 denotes a set of songs, 0 denotes a set of albums (for formatting purposes)
     def show_results(self, items, i):
         """displays formatted results from spotipy requests"""
