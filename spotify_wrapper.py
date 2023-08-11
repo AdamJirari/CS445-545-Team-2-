@@ -12,7 +12,7 @@ from kivy.core.window import Window
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-# from moviepy.editor import *
+from moviepy.editor import *
 
 
 TIMEFRAME = 'medium_term'
